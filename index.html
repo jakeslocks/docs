@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jakeslocks — #1 Sports Capper</title>
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #f0c94e;
+      --gold-dim: #8a6d28;
+      --black: #0a0a0a;
+      --dark: #111111;
+      --card: #181818;
+      --card2: #1e1e1e;
+      --text: #e8e8e8;
+      --muted: #888;
+      --border: #2a2a2a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 64px;
+    }
+    .nav-logo {
+      font-size: 1.4rem; font-weight: 800; letter-spacing: 1px;
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+    .nav-logo span { color: #ffffff; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: .9rem;
+      font-weight: 500; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-cta {
+      background: var(--gold); color: #000; border: none;
+      padding: .45rem 1.2rem; border-radius: 6px; font-weight: 700;
+      font-size: .9rem; cursor: pointer; text-decoration: none;
+      transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--gold-light); }
+
+    /* HERO */
+    .hero {
+      min-height: 90vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 4rem 1.5rem;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 65%);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.12); border: 1px solid var(--gold-dim);
+      color: var(--gold); padding: .35rem 1rem; border-radius: 50px;
+      font-size: .8rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900; letter-spacing: -1px; line-height: 1.05;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 .gold { color: var(--gold-light); }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted); max-width: 580px; margin: 0 auto 2.5rem;
+    }
+    .hero-stat {
+      display: inline-block;
+      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+      padding: .5rem 1.4rem; border-radius: 8px;
+      font-size: 1.05rem; font-weight: 700; color: var(--gold-light);
+      margin-bottom: 2.5rem;
+    }
+    .hero-stat span { color: var(--muted); font-weight: 400; font-size: .9rem; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      background: var(--gold); color: #000;
+      padding: .85rem 2rem; border-radius: 8px; font-weight: 800;
+      font-size: 1rem; text-decoration: none; transition: all .2s;
+      box-shadow: 0 4px 24px rgba(201,168,76,0.3);
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 6px 32px rgba(201,168,76,0.45); }
+    .btn-discord {
+      background: #5865F2; color: #fff;
+      padding: .85rem 2rem; border-radius: 8px; font-weight: 800;
+      font-size: 1rem; text-decoration: none; transition: all .2s;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .btn-discord:hover { background: #4752c4; transform: translateY(-2px); }
+    .btn-sobet {
+      background: #1a1a2e; color: var(--gold);
+      border: 1.5px solid var(--gold-dim);
+      padding: .85rem 2rem; border-radius: 8px; font-weight: 800;
+      font-size: 1rem; text-decoration: none; transition: all .2s;
+    }
+    .btn-sobet:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: var(--gold);
+      border: 1.5px solid var(--gold-dim);
+      padding: .85rem 2rem; border-radius: 8px; font-weight: 800;
+      font-size: 1rem; text-decoration: none; transition: all .2s;
+    }
+    .btn-outline:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
+
+    /* SECTIONS */
+    section { padding: 5rem 1.5rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      text-transform: uppercase; letter-spacing: 2px; font-size: .75rem;
+      font-weight: 700; color: var(--gold); margin-bottom: .75rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800; line-height: 1.2; margin-bottom: 1rem;
+    }
+    .section-title .gold { color: var(--gold-light); }
+    .divider {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 1rem 0 2.5rem;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    .about-left { display: flex; flex-direction: column; gap: 2rem; }
+    .profile-photo {
+      width: 100%; max-width: 340px;
+      border-radius: 16px;
+      border: 2px solid var(--gold-dim);
+      box-shadow: 0 8px 40px rgba(201,168,76,0.15);
+      object-fit: cover; aspect-ratio: 1/1;
+      display: block;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 1.05rem; }
+    .about-text p strong { color: var(--text); }
+    .about-cards { display: flex; flex-direction: column; gap: 1rem; }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 1.2rem 1.5rem; border-radius: 10px;
+    }
+    .stat-card .number {
+      font-size: 2rem; font-weight: 900; color: var(--gold-light); line-height: 1;
+    }
+    .stat-card .label { color: var(--muted); font-size: .85rem; margin-top: .2rem; }
+
+    /* TABS */
+    .tabs-section { background: var(--dark); }
+    .tab-nav {
+      display: flex; gap: .5rem; margin-bottom: 2rem; flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--muted); padding: .6rem 1.4rem; border-radius: 8px;
+      font-size: .9rem; font-weight: 600; cursor: pointer; transition: all .2s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--gold); color: #000; border-color: var(--gold);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .stats-embed-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; min-height: 500px;
+      display: flex; flex-direction: column;
+    }
+    .stats-embed-header {
+      background: var(--card2); padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .stats-embed-header span { font-weight: 700; color: var(--gold-light); }
+    .stats-embed-header a {
+      color: var(--muted); font-size: .8rem; text-decoration: none;
+    }
+    .stats-embed-header a:hover { color: var(--gold); }
+    .stats-embed-body {
+      flex: 1; padding: 2rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 1.5rem; text-align: center;
+    }
+    .stats-icon { font-size: 3rem; }
+    .stats-embed-body p { color: var(--muted); max-width: 360px; }
+    .stats-embed-body a {
+      display: inline-block;
+      background: var(--gold); color: #000; font-weight: 700;
+      padding: .7rem 1.6rem; border-radius: 8px; text-decoration: none;
+      transition: background .2s;
+    }
+    .stats-embed-body a:hover { background: var(--gold-light); }
+
+    .past-table { width: 100%; border-collapse: collapse; }
+    .past-table th {
+      text-align: left; padding: .75rem 1rem;
+      color: var(--gold); font-size: .8rem; letter-spacing: 1px;
+      text-transform: uppercase; border-bottom: 1px solid var(--border);
+    }
+    .past-table td {
+      padding: .85rem 1rem; border-bottom: 1px solid var(--border);
+      color: var(--text); font-size: .95rem;
+    }
+    .past-table tr:hover td { background: rgba(201,168,76,0.04); }
+    .badge {
+      display: inline-block; padding: .2rem .6rem; border-radius: 4px;
+      font-size: .75rem; font-weight: 700; text-transform: uppercase;
+    }
+    .badge-win { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .badge-loss { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .badge-push { background: rgba(156,163,175,0.15); color: #9ca3af; }
+    .month-summary {
+      display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .month-stat {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem 1.5rem; text-align: center;
+    }
+    .month-stat .n { font-size: 1.6rem; font-weight: 900; color: var(--gold-light); }
+    .month-stat .l { color: var(--muted); font-size: .8rem; }
+
+    /* WINS */
+    .wins-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .win-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem;
+      transition: transform .2s, border-color .2s;
+      position: relative; overflow: hidden;
+    }
+    .win-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+    .win-card:hover { transform: translateY(-4px); border-color: var(--gold-dim); }
+    .win-card .win-label {
+      font-size: .75rem; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--gold); font-weight: 700; margin-bottom: .5rem;
+    }
+    .win-card .win-play {
+      font-size: 1.1rem; font-weight: 700; margin-bottom: .4rem;
+    }
+    .win-card .win-result {
+      font-size: 1.5rem; font-weight: 900; color: #22c55e;
+    }
+    .win-card .win-date { color: var(--muted); font-size: .8rem; margin-top: .5rem; }
+    .win-card .win-quote {
+      margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--border);
+      color: var(--muted); font-size: .9rem; font-style: italic;
+    }
+
+    /* SPORTSBOOKS */
+    .books-section { background: var(--dark); }
+    .books-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .book-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem;
+      display: flex; flex-direction: column; gap: .75rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .book-card:hover { border-color: var(--gold-dim); transform: translateY(-2px); }
+    .book-header { display: flex; align-items: center; gap: .75rem; }
+    .book-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; font-weight: 900; flex-shrink: 0;
+    }
+    .book-name { font-size: 1.1rem; font-weight: 800; }
+    .book-bonus {
+      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25);
+      color: var(--gold); padding: .35rem .8rem; border-radius: 6px;
+      font-size: .85rem; font-weight: 700; display: inline-block; width: fit-content;
+    }
+    .book-desc { color: var(--muted); font-size: .9rem; line-height: 1.5; }
+    .book-code {
+      background: var(--card2); border: 1px dashed var(--border);
+      padding: .4rem .8rem; border-radius: 6px;
+      font-family: monospace; font-size: .9rem; color: var(--gold-light);
+      width: fit-content;
+    }
+    .book-btn {
+      display: block; text-align: center;
+      background: var(--gold); color: #000; font-weight: 700;
+      padding: .7rem; border-radius: 8px; text-decoration: none;
+      transition: background .2s; margin-top: auto;
+    }
+    .book-btn:hover { background: var(--gold-light); }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark); border-top: 1px solid var(--border);
+      padding: 3rem 1.5rem; text-align: center;
+    }
+    .footer-logo {
+      font-size: 1.6rem; font-weight: 900; color: var(--gold-light);
+      margin-bottom: .5rem;
+    }
+    .footer-tagline { color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; }
+    .footer-links { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: .9rem; transition: color .2s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-disclaimer {
+      color: #555; font-size: .75rem; max-width: 600px; margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.8rem; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">JAKES<span>LOCKS</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#stats">Stats</a></li>
+    <li><a href="#wins">Wins</a></li>
+    <li><a href="#books">Sportsbooks</a></li>
+  </ul>
+  <a class="nav-cta" href="https://whop.com/jakeslocks/" target="_blank" rel="noopener">Subscribe</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🏆 #1 Sports Capper in the Business</div>
+  <h1>Stop Gambling <span class="gold">Blind.</span><br>Follow the Data.</h1>
+  <p class="hero-sub">Winning sports picks from an experienced bettor who keeps it 100. Transparent records, honest analysis, and daily plays that hit.</p>
+  <div class="hero-stat">📈 +33.8 Units in May 2026 <span>— verified record</span></div>
+  <div class="hero-buttons">
+    <a class="btn-primary" href="https://whop.com/jakeslocks/" target="_blank" rel="noopener">🔐 Join on Whop</a>
+    <a class="btn-discord" href="https://discord.gg/5K5D9Mpy5r" target="_blank" rel="noopener" style="background:#5865F2;">
+      <svg width="20" height="20" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)"><path d="M60.105 4.898A58.55 58.55 0 0045.719.415a.22.22 0 00-.233.11 40.784 40.784 0 00-1.8 3.697c-5.456-.817-10.886-.817-16.231 0a37.4 37.4 0 00-1.827-3.697.228.228 0 00-.233-.11 58.386 58.386 0 00-14.386 4.483.207.207 0 00-.095.082C1.578 18.73-.944 32.144.293 45.39a.244.244 0 00.093.166c6.073 4.46 11.956 7.167 17.729 8.952a.23.23 0 00.249-.082 42.08 42.08 0 003.627-5.9.225.225 0 00-.123-.312 38.772 38.772 0 01-5.539-2.64.228.228 0 01-.022-.378 31.409 31.409 0 001.1-.862.22.22 0 01.23-.031c11.619 5.304 24.198 5.304 35.68 0a.219.219 0 01.232.029c.356.293.724.586 1.102.864a.228.228 0 01-.02.378 36.384 36.384 0 01-5.54 2.637.227.227 0 00-.121.315 47.249 47.249 0 003.624 5.897.225.225 0 00.249.084c5.801-1.785 11.684-4.492 17.757-8.952a.228.228 0 00.092-.163c1.48-15.315-2.48-28.618-10.497-40.412a.18.18 0 00-.093-.084zm-36.38 32.427c-3.497 0-6.38-3.211-6.38-7.156 0-3.944 2.827-7.156 6.38-7.156 3.583 0 6.438 3.24 6.38 7.156 0 3.945-2.827 7.156-6.38 7.156zm23.593 0c-3.498 0-6.38-3.211-6.38-7.156 0-3.944 2.826-7.156 6.38-7.156 3.582 0 6.437 3.24 6.38 7.156 0 3.945-2.798 7.156-6.38 7.156z" fill="currentColor"/></g><defs><clipPath id="clip0"><path fill="#fff" d="M0 0h71v55H0z"/></clipPath></defs></svg>
+      Join Discord
+    </a>
+    <a class="btn-sobet" href="https://sobet.io/pro/jakeslocks" target="_blank" rel="noopener">📊 Join on Sobet</a>
+    <a class="btn-outline" href="https://sobet.io/pro/jakeslocks" target="_blank" rel="noopener">📈 View Full Record</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-left">
+        <img src="jake.avif" alt="Jake — Jakeslocks" class="profile-photo" />
+        <div class="about-text">
+          <p class="section-label">About Jake</p>
+          <h2 class="section-title">Transparent. Honest. <span class="gold">Consistent.</span></h2>
+          <div class="divider"></div>
+          <p>I'm Jake — a sports bettor who's spent years dialing in a system built on <strong>data, discipline, and real accountability</strong>. No fake screenshots. No cherry-picked picks. Every play is logged and verified.</p>
+          <p>The Jakeslocks community on Discord is where I drop daily plays, analysis breakdowns, and live game threads. You'll see my thinking, not just the picks — because understanding why matters more than just following blindly.</p>
+          <p><strong>Stop gambling blind. Follow the data.</strong> Join thousands of members who have turned their betting around by following a proven process.</p>
+          <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:2rem;">
+            <a class="btn-primary" href="https://whop.com/jakeslocks/" target="_blank" rel="noopener">Subscribe on Whop</a>
+            <a class="btn-discord" href="https://discord.gg/5K5D9Mpy5r" target="_blank" rel="noopener">Join Discord Free</a>
+          </div>
+        </div>
+      </div>
+      <div class="about-cards">
+        <div class="stat-card">
+          <div class="number">+33.8u</div>
+          <div class="label">Units won — May 2026</div>
+        </div>
+        <div class="stat-card">
+          <div class="number">100%</div>
+          <div class="label">Transparent, verified record on Sobet</div>
+        </div>
+        <div class="stat-card">
+          <div class="number">Daily</div>
+          <div class="label">Plays dropped with full analysis</div>
+        </div>
+        <div class="stat-card">
+          <div class="number">#1</div>
+          <div class="label">Ranked sports capper — honest, no hype</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS TABS -->
+<section id="stats" class="tabs-section">
+  <div class="container">
+    <p class="section-label">Performance</p>
+    <h2 class="section-title">Live &amp; Past <span class="gold">Stats</span></h2>
+    <div class="divider"></div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="showTab('live')">🔴 Live Record</button>
+      <button class="tab-btn" onclick="showTab('past')">📅 Past Results</button>
+    </div>
+
+    <div id="tab-live" class="tab-panel active">
+      <div class="stats-embed-box">
+        <div class="stats-embed-header">
+          <span>Live Verified Record — Sobet.io</span>
+          <a href="https://sobet.io/pro/jakeslocks" target="_blank" rel="noopener">Open Full Profile ↗</a>
+        </div>
+        <div class="stats-embed-body">
+          <div class="stats-icon">📊</div>
+          <h3 style="font-size:1.3rem;">Real-Time Verified Stats</h3>
+          <p>Jakeslocks' full record is tracked and verified on Sobet — the platform where users price the markets, ensuring no manipulation of historical picks.</p>
+          <a href="https://sobet.io/pro/jakeslocks" target="_blank" rel="noopener">View Live Record on Sobet ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-past" class="tab-panel">
+      <div class="month-summary">
+        <div class="month-stat"><div class="n">+33.8u</div><div class="l">May 2026</div></div>
+        <div class="month-stat"><div class="n" style="color:#22c55e;">✓</div><div class="l">Verified Record</div></div>
+        <div class="month-stat"><div class="n">Sobet</div><div class="l">Tracking Platform</div></div>
+      </div>
+      <div class="stats-embed-box">
+        <div class="stats-embed-header">
+          <span>Historical Performance</span>
+          <a href="https://sobet.io/pro/jakeslocks" target="_blank" rel="noopener">Full history on Sobet ↗</a>
+        </div>
+        <div style="overflow-x:auto; padding: 1rem;">
+          <table class="past-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Play</th>
+                <th>Sport</th>
+                <th>Units</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>May 2026</td>
+                <td>Monthly Summary</td>
+                <td>Multi-sport</td>
+                <td>+33.8</td>
+                <td><span class="badge badge-win">WIN</span></td>
+              </tr>
+              <tr>
+                <td colspan="5" style="text-align:center; padding:2rem; color:var(--muted);">
+                  Full breakdown available on
+                  <a href="https://sobet.io/pro/jakeslocks" target="_blank" rel="noopener" style="color:var(--gold);">Sobet.io ↗</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WINS & SUCCESS STORIES -->
+<section id="wins">
+  <div class="container">
+    <p class="section-label">Success Stories</p>
+    <h2 class="section-title">Wins &amp; <span class="gold">Big Plays</span></h2>
+    <div class="divider"></div>
+    <div class="wins-grid">
+      <div class="win-card">
+        <div class="win-label">📈 May 2026 — Monthly Recap</div>
+        <div class="win-play">Multi-Sport Card</div>
+        <div class="win-result">+33.8 Units</div>
+        <div class="win-date">May 2026 — Verified on Sobet</div>
+        <div class="win-quote">"Best month yet. The process is dialed in and the record speaks for itself."</div>
+      </div>
+      <div class="win-card">
+        <div class="win-label">🏈 NFL</div>
+        <div class="win-play">Add your best NFL play here</div>
+        <div class="win-result">+Units</div>
+        <div class="win-date">Date</div>
+        <div class="win-quote">Add a member quote or your own note about this play.</div>
+      </div>
+      <div class="win-card">
+        <div class="win-label">🏀 NBA</div>
+        <div class="win-play">Add your best NBA play here</div>
+        <div class="win-result">+Units</div>
+        <div class="win-date">Date</div>
+        <div class="win-quote">Add a member quote or your own note about this play.</div>
+      </div>
+      <div class="win-card">
+        <div class="win-label">⚾ MLB</div>
+        <div class="win-play">Add your best MLB play here</div>
+        <div class="win-result">+Units</div>
+        <div class="win-date">Date</div>
+        <div class="win-quote">Add a member quote or your own note about this play.</div>
+      </div>
+      <div class="win-card">
+        <div class="win-label">🎯 Parlay</div>
+        <div class="win-play">Add a big parlay hit here</div>
+        <div class="win-result">+Units</div>
+        <div class="win-date">Date</div>
+        <div class="win-quote">Add a member quote or your own note about this play.</div>
+      </div>
+      <div class="win-card" style="border-style:dashed; display:flex; align-items:center; justify-content:center; min-height:160px; text-align:center;">
+        <div>
+          <div style="font-size:2rem; margin-bottom:.5rem;">➕</div>
+          <div style="color:var(--muted); font-size:.9rem;">More wins coming<br>— record updated regularly</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:2.5rem;">
+      <a class="btn-outline" href="https://sobet.io/pro/jakeslocks" target="_blank" rel="noopener">📊 See Full Verified Record on Sobet</a>
+    </div>
+  </div>
+</section>
+
+<!-- SPORTSBOOKS -->
+<section id="books" class="books-section">
+  <div class="container">
+    <p class="section-label">Get the Edge</p>
+    <h2 class="section-title">Sportsbooks I Use &amp; <span class="gold">Recommend</span></h2>
+    <div class="divider"></div>
+    <p style="color:var(--muted); margin-bottom:2rem; max-width:600px;">Sign up through my referral links to unlock exclusive bonuses and promotions — and bet alongside me on the same platforms I use every day.</p>
+
+    <div class="books-grid">
+
+      <div class="book-card">
+        <div class="book-header">
+          <div class="book-icon" style="background:rgba(99,102,241,0.15); color:#818cf8;">PX</div>
+          <div>
+            <div class="book-name">ProphetX</div>
+            <div style="color:var(--muted); font-size:.8rem;">Prediction Market</div>
+          </div>
+        </div>
+        <div class="book-bonus">🎁 20% First Purchase Match up to $100</div>
+        <div class="book-desc">A prediction market for sports where users price the markets, not the house. Best odds on parlays and straights — the edge is real.</div>
+        <a class="book-btn" href="https://prophetx.onelink.me/E5Yi/4ob992ku" target="_blank" rel="noopener">Sign Up on ProphetX ↗</a>
+      </div>
+
+      <div class="book-card">
+        <div class="book-header">
+          <div class="book-icon" style="background:rgba(34,197,94,0.15); color:#22c55e;">NV</div>
+          <div>
+            <div class="book-name">Novig</div>
+            <div style="color:var(--muted); font-size:.8rem;">No-Vig Betting Exchange</div>
+          </div>
+        </div>
+        <div class="book-bonus">🎁 Referral Bonus on Sign Up</div>
+        <div class="book-desc">Use my referral code when signing up to get your bonus. No-vig means you keep more of what you win.</div>
+        <div class="book-code">Code: D14B69</div>
+        <a class="book-btn" href="https://novig.onelink.me/JHQQ/ue2hc2uy" target="_blank" rel="noopener">Sign Up on Novig ↗</a>
+      </div>
+
+      <div class="book-card">
+        <div class="book-header">
+          <div class="book-icon" style="background:rgba(0,122,255,0.15); color:#007aff;">DK</div>
+          <div>
+            <div class="book-name">DraftKings</div>
+            <div style="color:var(--muted); font-size:.8rem;">Sportsbook</div>
+          </div>
+        </div>
+        <div class="book-bonus">🎁 New User Promo via My Link</div>
+        <div class="book-desc">One of the most trusted sportsbooks in the country. Sign up through my invite link to unlock your new user bonus.</div>
+        <a class="book-btn" href="https://sportsbook.draftkings.com/r/sb/jbowmanshaw1991/US-IN-SB/US-IN" target="_blank" rel="noopener">Sign Up on DraftKings ↗</a>
+      </div>
+
+      <div class="book-card">
+        <div class="book-header">
+          <div class="book-icon" style="background:rgba(31,187,100,0.15); color:#1fbb64;">FD</div>
+          <div>
+            <div class="book-name">FanDuel</div>
+            <div style="color:var(--muted); font-size:.8rem;">Sportsbook</div>
+          </div>
+        </div>
+        <div class="book-bonus">🎁 New User Promo via My Link</div>
+        <div class="book-desc">FanDuel is where I play daily. Use my personal invite link for exclusive new user promotions. Terms apply.</div>
+        <a class="book-btn" href="https://fndl.co/i9przim" target="_blank" rel="noopener">Sign Up on FanDuel ↗</a>
+      </div>
+
+      <div class="book-card">
+        <div class="book-header">
+          <div class="book-icon" style="background:rgba(201,168,76,0.15); color:var(--gold);">KL</div>
+          <div>
+            <div class="book-name">Kalshi</div>
+            <div style="color:var(--muted); font-size:.8rem;">Prediction Markets</div>
+          </div>
+        </div>
+        <div class="book-bonus">🎁 $25 Bonus for You &amp; Me</div>
+        <div class="book-desc">Regulated prediction markets — trade on real-world outcomes. Sign up with my link and we both get $25.</div>
+        <a class="book-btn" href="https://kalshi.com/sign-up/?referral=cb702ea1-8148-4efd-8b94-0b13e16f18a0&m=true" target="_blank" rel="noopener">Sign Up on Kalshi ↗</a>
+      </div>
+
+      <div class="book-card">
+        <div class="book-header">
+          <div class="book-icon" style="background:rgba(239,68,68,0.15); color:#ef4444;">FN</div>
+          <div>
+            <div class="book-name">Fanatics Sportsbook</div>
+            <div style="color:var(--muted); font-size:.8rem;">Sportsbook</div>
+          </div>
+        </div>
+        <div class="book-bonus">🎁 $100 FanCash after $10 Wager</div>
+        <div class="book-desc">Sign up through my link and get $100 FanCash after your first $10 wager. <strong>Do not download from the App Store</strong> — use my link to ensure the bonus is connected.</div>
+        <div class="book-code">Code: EFWSSITOYK</div>
+        <a class="book-btn" href="https://fanatics.onelink.me/5kut/9b3ik4g3" target="_blank" rel="noopener">Sign Up on Fanatics ↗</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">JAKESLOCKS</div>
+  <div class="footer-tagline">#1 Sports Capper — Transparent. Data-driven. Consistent.</div>
+  <div class="footer-links">
+    <a href="https://whop.com/jakeslocks/" target="_blank" rel="noopener">Whop Subscription</a>
+    <a href="https://discord.gg/5K5D9Mpy5r" target="_blank" rel="noopener">Discord Community</a>
+    <a href="https://sobet.io/pro/jakeslocks" target="_blank" rel="noopener">Verified Record</a>
+    <a href="#books">Sportsbooks</a>
+  </div>
+  <div class="footer-disclaimer">
+    Sports betting involves risk. Past performance does not guarantee future results. Must be 21+ and located in a legal sports betting state. Please bet responsibly. Jakeslocks is not responsible for individual losses. This site contains affiliate/referral links — I may receive compensation when you sign up through my links.
+  </div>
+</footer>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
